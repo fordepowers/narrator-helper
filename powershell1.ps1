@@ -50,7 +50,7 @@ function Loading {
 function NumberOfPlayers {
     Loading;
     do {
-    $WontWork = "That won't work!";
+    $WontWork = "That will not work!";
     $InputString = Read-Host -Prompt "How many players are there?"; # Initialize number of players
     $global:NumberOfPlayers = $InputString -as [Int];
     # Make sure a right value was chosen.
@@ -70,14 +70,14 @@ function NumberOfPlayers {
 function WerewolvesIntro {
     Loading;
     Start-Sleep -m $SS;
-    Write-Host "                                                                                     " -ForegroundColor DarkRed; Start-Sleep -m $SS;
-    Write-Host "██╗    ██╗███████╗██████╗ ███████╗██╗    ██╗ ██████╗ ██╗    ██╗   ██╗███████╗███████╗" -ForegroundColor DarkRed; Start-Sleep -m $SS;
-    Write-Host "██║    ██║██╔════╝██╔══██╗██╔════╝██║    ██║██╔═══██╗██║    ██║   ██║██╔════╝██╔════╝" -ForegroundColor DarkRed; Start-Sleep -m $SS;
-    Write-Host "██║ █╗ ██║█████╗  ██████╔╝█████╗  ██║ █╗ ██║██║   ██║██║    ██║   ██║█████╗  ███████╗" -ForegroundColor DarkRed; Start-Sleep -m $SS;
-    Write-Host "██║███╗██║██╔══╝  ██╔══██╗██╔══╝  ██║███╗██║██║   ██║██║    ╚██╗ ██╔╝██╔══╝  ╚════██║" -ForegroundColor DarkRed; Start-Sleep -m $SS;
-    Write-Host "╚███╔███╔╝███████╗██║  ██║███████╗╚███╔███╔╝╚██████╔╝███████╗╚████╔╝ ███████╗███████║" -ForegroundColor DarkRed; Start-Sleep -m $SS;
-    Write-Host " ╚══╝╚══╝ ╚══════╝╚═╝  ╚═╝╚══════╝ ╚══╝╚══╝  ╚═════╝ ╚══════╝ ╚═══╝  ╚══════╝╚══════╝" -ForegroundColor DarkRed; Start-Sleep -m $SS;
-    Write-Host "                                                                                     " -ForegroundColor DarkRed; Start-Sleep -m $SS;
+    Write-Host "                                                                                      " -ForegroundColor DarkRed; Start-Sleep -m $SS;
+    Write-Host "██╗    ██╗███████╗██████╗ ███████╗██╗    ██╗ ██████╗ ██╗    ██╗   ██╗███████╗███████╗ " -ForegroundColor DarkRed; Start-Sleep -m $SS;
+    Write-Host "██║    ██║██╔════╝██╔══██╗██╔════╝██║    ██║██╔═══██╗██║    ██║   ██║██╔════╝██╔════╝ " -ForegroundColor DarkRed; Start-Sleep -m $SS;
+    Write-Host "██║ █╗ ██║█████╗  ██████╔╝█████╗  ██║ █╗ ██║██║   ██║██║    ██║   ██║█████╗  ███████╗ " -ForegroundColor DarkRed; Start-Sleep -m $SS;
+    Write-Host "██║███╗██║██╔══╝  ██╔══██╗██╔══╝  ██║███╗██║██║   ██║██║    ╚██╗ ██╔╝██╔══╝  ╚════██║ " -ForegroundColor DarkRed; Start-Sleep -m $SS;
+    Write-Host "╚███╔███╔╝███████╗██║  ██║███████╗╚███╔███╔╝╚██████╔╝███████╗╚████╔╝ ███████╗███████║ " -ForegroundColor DarkRed; Start-Sleep -m $SS;
+    Write-Host " ╚══╝╚══╝ ╚══════╝╚═╝  ╚═╝╚══════╝ ╚══╝╚══╝  ╚═════╝ ╚══════╝ ╚═══╝  ╚══════╝╚══════╝ " -ForegroundColor DarkRed; Start-Sleep -m $SS;
+    Write-Host "                                                                                      " -ForegroundColor DarkRed; Start-Sleep -m $SS;
 }
 
 <# Function that takes how many players their are and asks for their names #>
@@ -88,8 +88,8 @@ function GetPlayerNames {
         $plusone = $i + 1;
         do {
         $global:PlayerArray[$i] = Read-Host -Prompt "Enter the name of Player $plusone ";
-        if($global:PlayerArray[$i - 1] -eq $global:PlayerArray[$i]){Write-Host = "That's the same name!" -ForegroundColor Red; $Ok = $false;}
-        elseif($null -eq $global:PlayerArray[$i]){Write-Host = "A name can't be blank!" -ForegroundColor Red; $Ok = $false;}
+        if($global:PlayerArray[$i - 1] -eq $global:PlayerArray[$i]){Write-Host = "That is the same name!" -ForegroundColor Red; $Ok = $false;}
+        elseif($null -eq $global:PlayerArray[$i]){Write-Host = "A name cannot be blank!" -ForegroundColor Red; $Ok = $false;}
         else{$Ok = $true;}
         # Code will make sure array is unique 
         # if(-not(Compare-Object $global:PlayerArray $global:PlayerArray[$i] -IncludeEqual)){ Write-Host = "Start over!";}
@@ -107,8 +107,8 @@ function ChooseWerewolves {
         $plusone = $i + 1;
         do {
             $global:WereWolvesArray[$i] = Read-Host -Prompt "Enter the name of Werewolf $plusone ";
-            if($global:WereWolvesArray[$i - 1] -eq $global:WereWolvesArray[$i] -and $global:WereWolvesArray.Length -gt 5){Write-Host = "They're already a Werewolf!" -ForegroundColor red; $Ok = $false;}
-            elseif($null -eq $global:WereWolvesArray[$i]){Write-Host = "A Werewolf needs a name!" -ForegroundColor Red; $Ok = $false;}
+           # if($global:WereWolvesArray[$i - 1] -eq $global:WereWolvesArray[$i] -and $global:WereWolvesArray.Length -gt 5){Write-Host = "They're already a Werewolf!" -ForegroundColor red; $Ok = $false;}
+            if($null -eq $global:WereWolvesArray[$i]){Write-Host = "A Werewolf needs a name!" -ForegroundColor Red; $Ok = $false;}
             else{$Ok = $true;}
         } 
         until($Ok)
