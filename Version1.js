@@ -32,12 +32,11 @@ function IntroductionPage() {
  *  Handles the startup of the game 
  * */
 function StartUp() {
-    ResizeWindow;
-    IntroductionPage;
+    IntroductionPage();
 }
 
 /**
- *  Adds a little loading symbol 
+ * Adds a little loading symbol 
  * */
 function Loading() {
     console.log(" "); 
@@ -53,8 +52,8 @@ function Loading() {
 function NumberOfPlayers() {
     Loading;
     do {
-    WontWork = "That won't work!");
-    InputString = readline("How many players are there?"); // Initialize number of players
+    let WontWork = "That won't work!";
+    var InputString = readline("How many players are there?"); // Initialize number of players
     $global:NumberOfPlayers = $InputString -as [Int];
     // Make sure a right value was chosen.
     if($NULL -eq $global:NumberOfPlayers) {console.log($WontWork -ForegroundColor Red;}
