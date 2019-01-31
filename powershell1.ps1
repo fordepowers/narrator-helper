@@ -110,7 +110,7 @@ function ChooseWerewolves {
         $plusone = $i + 1;
         do {
             $currentPlayerName = Read-Host -Prompt "Enter the name of Werewolf $plusone ";
-            if($currentPlayerName -in $global:PlayerArray -eq $false) {
+            if ($currentPlayerName -in $global:PlayerArray -eq $false) {
                 Write-Host = "That's not a player!" -ForegroundColor Red; $Ok = $false;
             }
             elseif ($null -eq $currentPlayerName) {
@@ -138,15 +138,15 @@ function ChooseDoctor {
     Loading;
     do {
         $global:Doctor = Read-Host -Prompt "Enter the name of the Doctor ";
-        if($global:Doctor -in $global:PlayerArray -eq $false) {
+        if ($global:Doctor -in $global:PlayerArray -eq $false) {
             Write-Host = "That's not a player!" -ForegroundColor Red; $Ok = $false;
         }
         elseif (($global:Doctor -in $global:WereWolvesArray) -or
-        ($global:Doctor -eq $global:LittleGirl) -or
-        ($global:Doctor -eq $global:Cupid) -or
-        ($global:Doctor -eq $global:DemonButler) -or
-        ($global:Doctor -eq $global:DemonDog) -or
-        ($global:Doctor -eq $global:OldMan)) {
+            ($global:Doctor -eq $global:LittleGirl) -or
+            ($global:Doctor -eq $global:Cupid) -or
+            ($global:Doctor -eq $global:DemonButler) -or
+            ($global:Doctor -eq $global:DemonDog) -or
+            ($global:Doctor -eq $global:OldMan)) {
             Write-Host = "They're already another character!" -ForegroundColor Red; $Ok = $false;
         }
         else {
@@ -163,15 +163,15 @@ function ChooseLittleGirl {
     Loading;
     do {
         $global:LittleGirl = Read-Host -Prompt "Enter the name of the Little Girl ";
-        if($global:LittleGirl -in $global:PlayerArray -eq $false) {
+        if ($global:LittleGirl -in $global:PlayerArray -eq $false) {
             Write-Host = "That's not a player!" -ForegroundColor Red; $Ok = $false;
         }
         elseif (($global:LittleGirl -in $global:WereWolvesArray) -or
-        ($global:LittleGirl -eq $global:Doctor) -or
-        ($global:LittleGirl -eq $global:Cupid) -or
-        ($global:LittleGirl -eq $global:DemonButler) -or
-        ($global:LittleGirl -eq $global:DemonDog) -or
-        ($global:LittleGirl -eq $global:OldMan)) {
+            ($global:LittleGirl -eq $global:Doctor) -or
+            ($global:LittleGirl -eq $global:Cupid) -or
+            ($global:LittleGirl -eq $global:DemonButler) -or
+            ($global:LittleGirl -eq $global:DemonDog) -or
+            ($global:LittleGirl -eq $global:OldMan)) {
             Write-Host = "They're already another character!" -ForegroundColor Red; $Ok = $false;
         }
         else {
@@ -188,15 +188,15 @@ function ChooseCupid {
     Loading;
     do {
         $global:Cupid = Read-Host -Prompt "Enter the name of Cupid ";
-        if($global:Cupid -in $global:PlayerArray -eq $false) {
+        if ($global:Cupid -in $global:PlayerArray -eq $false) {
             Write-Host = "That's not a player!" -ForegroundColor Red; $Ok = $false;
         }
         elseif (($global:Cupid -in $global:WereWolvesArray) -or
-        ($global:Cupid -eq $global:Doctor) -or
-        ($global:Cupid -eq $global:LittleGirl) -or
-        ($global:Cupid -eq $global:DemonButler) -or
-        ($global:Cupid -eq $global:DemonDog) -or
-        ($global:Cupid -eq $global:OldMan)) {
+            ($global:Cupid -eq $global:Doctor) -or
+            ($global:Cupid -eq $global:LittleGirl) -or
+            ($global:Cupid -eq $global:DemonButler) -or
+            ($global:Cupid -eq $global:DemonDog) -or
+            ($global:Cupid -eq $global:OldMan)) {
             Write-Host = "They're already another character!" -ForegroundColor Red; $Ok = $false;
         }
         else {
@@ -213,15 +213,15 @@ function ChooseDemonButler {
     Loading;
     do {
         $global:DemonButler = Read-Host -Prompt "Enter the name of the Demon Butler ";
-        if($global:DemonButler -in $global:PlayerArray -eq $false) {
+        if ($global:DemonButler -in $global:PlayerArray -eq $false) {
             Write-Host = "That's not a player!" -ForegroundColor Red; $Ok = $false;
         }
         elseif (($global:DemonButler -in $global:WereWolvesArray) -or
-        ($global:DemonButler -eq $global:Doctor) -or
-        ($global:DemonButler -eq $global:LittleGirl) -or
-        ($global:DemonButler -eq $global:Cupid) -or
-        ($global:DemonButler -eq $global:DemonDog) -or
-        ($global:DemonButler -eq $global:OldMan)) {
+            ($global:DemonButler -eq $global:Doctor) -or
+            ($global:DemonButler -eq $global:LittleGirl) -or
+            ($global:DemonButler -eq $global:Cupid) -or
+            ($global:DemonButler -eq $global:DemonDog) -or
+            ($global:DemonButler -eq $global:OldMan)) {
             Write-Host = "They're already another character!" -ForegroundColor Red; $Ok = $false;
         }
         else {
@@ -238,15 +238,15 @@ function ChooseDemonDog {
     Loading;
     do {
         $global:DemonDog = Read-Host -Prompt "Enter the name of the Demon Dog ";
-        if($global:DemonDog -in $global:PlayerArray -eq $false) {
+        if ($global:DemonDog -in $global:PlayerArray -eq $false) {
             Write-Host = "That's not a player!" -ForegroundColor Red; $Ok = $false;
         }
         elseif (($global:DemonDog -in $global:WereWolvesArray) -or
-        ($global:DemonDog -eq $global:Doctor) -or
-        ($global:DemonDog -eq $global:LittleGirl) -or
-        ($global:DemonDog -eq $global:Cupid) -or
-        ($global:DemonDog -eq $global:DemonButler) -or
-        ($global:DemonDog -eq $global:OldMan)) {
+            ($global:DemonDog -eq $global:Doctor) -or
+            ($global:DemonDog -eq $global:LittleGirl) -or
+            ($global:DemonDog -eq $global:Cupid) -or
+            ($global:DemonDog -eq $global:DemonButler) -or
+            ($global:DemonDog -eq $global:OldMan)) {
             Write-Host = "They're already another character!" -ForegroundColor Red; $Ok = $false;
         }
         else {
@@ -264,15 +264,15 @@ function ChooseOldMan {
     Loading;
     do {
         $global:OldMan = Read-Host -Prompt "Enter the name of the Old Man ";
-        if($global:OldMan -in $global:PlayerArray -eq $false) {
+        if ($global:OldMan -in $global:PlayerArray -eq $false) {
             Write-Host = "That's not a player!" -ForegroundColor Red; $Ok = $false;
         }
         elseif (($global:OldMan -in $global:WereWolvesArray) -or
-        ($global:OldMan -eq $global:Doctor) -or
-        ($global:OldMan -eq $global:LittleGirl) -or
-        ($global:OldMan -eq $global:Cupid) -or
-        ($global:OldMan -eq $global:DemonButler) -or
-        ($global:OldMan -eq $global:DemonDog)) {
+            ($global:OldMan -eq $global:Doctor) -or
+            ($global:OldMan -eq $global:LittleGirl) -or
+            ($global:OldMan -eq $global:Cupid) -or
+            ($global:OldMan -eq $global:DemonButler) -or
+            ($global:OldMan -eq $global:DemonDog)) {
             Write-Host = "They're already another character!" -ForegroundColor Red; $Ok = $false;
         }
         else {
@@ -333,24 +333,23 @@ function WhosWho {
     $isDead = "";
     Write-Host "Werewolves: $global:WereWolvesArray" @BGT; # Werewolves' Status
 
+    if ($global:Doctor -eq $null) {$isDead = "...is dead."; } # Doctor's Status
+    Write-Host "Doctor: $global:Doctor $isDead" @GGT;
 
-    if($global:Doctor -eq $null){$isDead = "...dead.";} # Doctor's Status
-        Write-Host "Doctor: $global:Doctor $isDead" @GGT;
+    if ($global:LittleGirl -eq $null) {$isDead = "...is dead."; } # Little Girl's Status
+    Write-Host "Little Girl: $global:LittleGirl $isDead" @GGT;
 
-    if($global:LittleGirl -eq $null){$isDead = "...dead.";} # Little Girl's Status
-        Write-Host "Little Girl: $global:LittleGirl $isDead" @GGT;
+    if ($global:Cupid -eq $null) {$isDead = "...is dead."; } # Cupid's Status
+    Write-Host "Cupid: $global:Cupid $isDead" @GGT;
 
-    if($global:Cupid -eq $null){$isDead = "...dead.";} # Cupid's Status
-        Write-Host "Cupid: $global:Cupid $isDead" @GGT;
+    if ($global:DemonButler -eq $null) {$isDead = "...is dead."; } # Demon Butler's Status
+    Write-Host "Demon Butler: $global:DemonButler $isDead" @GGT;
 
-    if($global:DemonButler -eq $null){$isDead = "...dead.";} # Demon Butler's Status
-        Write-Host "Demon Butler: $global:DemonButler $isDead" @GGT;
+    if ($global:DemonDog -eq $null) {$isDead = "...is dead."; } # Demon Dog's Status
+    Write-Host "Demon Dog: $global:DemonDog $isDead" @BGT;
 
-    if($global:DemonDog -eq $null){$isDead = "...dead.";} # Demon Dog's Status
-        Write-Host "Demon Dog: $global:DemonDog $isDead" @BGT;
-
-    if($global:OldMan -eq $null){$isDead = "...dead.";} # Old Man's Status
-        Write-Host "Old Man: $global:OldMan $isDead" @GGT;
+    if ($global:OldMan -eq $null) {$isDead = "...is dead."; } # Old Man's Status
+    Write-Host "Old Man: $global:OldMan $isDead" @GGT;
 
     Write-Host "";
     Write-Host "Number of Good Guys: $global:GoodGuys" @GGT;
@@ -359,35 +358,187 @@ function WhosWho {
 
 <# Handles the WereWolves selecting who they want to kill #>
 function PromptWereWolves {
+    Loading;
+    do {
+        $deadPerson = Read-Host -Prompt "Who do the Werewolves want to kill?";
+        if ($deadPerson -in $global:PlayerArray -eq $false) {Write-Host "That's not a player!" -ForegroundColor Red; $Ok = $false; }
+        elseif ($deadPerson -in $global:WereWolvesArray) {Write-Host "That's a fellow Werewolf!" -ForegroundColor Red; $Ok = $false; }
+        else {$Ok = $true; }
+    } until ($Ok)
+    if ($deadPerson -ne $global:SavedPerson) {
+        if ($deadPerson -eq $global:Doctor) {
+            $global:Doctor = $null;
+            Write-Host "$deadPerson, the Doctor was killed." -ForegroundColor Yellow;
+            $global:GoodGuys = $global:GoodGuys - 1;
+        }
+        elseif ($deadPerson -eq $global:LittleGirl) {
+            $global:LittleGirl = $null;
+            Write-Host "$deadPerson, the Little Girl was killed." -ForegroundColor Yellow;
+            $global:GoodGuys = $global:GoodGuys - 1; 
+        }
+        elseif ($deadPerson -eq $global:Cupid) {
+            $global:Cupid = $null;
+            Write-Host "$deadPerson, Cupid was killed." -ForegroundColor Yellow;
+            $global:GoodGuys = $global:GoodGuys - 1;
+        }
+        elseif ($deadPerson -eq $global:DemonButler) {
+            $global:DemonButler = $null;
+            Write-Host "$deadPerson, the Demon Butler was killed." -ForegroundColor Yellow;
+            $global:GoodGuys = $global:GoodGuys - 1;
+        }
+        elseif ($deadPerson -eq $global:DemonDog) {
+            $global:DemonDog = $null;
+            Write-Host "$deadPerson, the Demon Dog was killed." -ForegroundColor Yellow;
+            $global:BadGuys = $global:Badguys - 1;
+        }
+        elseif ($deadPerson -eq $global:OldMan) {
+            $global:OldMan = $null;
+            Write-Host "$deadPerson, the Old Man was killed." -ForegroundColor Yellow;
+            $global:GoodGuys = $global:GoodGuys - 1;
+        }
+        else {
+            Write-Host "$deadPerson, a villager was killed." -ForegroundColor Yellow;
+            $global:GoodGuys = $global:GoodGuys - 1;
+        }
+        $global:PlayerArray -replace $deadPerson, $null;
+    }
+    else {Write-Host "$deadPerson was saved by the Doctor." -ForegroundColor Yellow; }
+}
 
+<# Handles the Doctor selecting who they want to save #>
+function PromptDoctor {
+    Loading;
+    do {
+        $global:SavedPerson = Read-Host -Prompt "Who does the Doctor want to save?";
+        if ($global:SavedPerson -in $global:PlayerArray -eq $false) {Write-Host "That's not a player!" -ForegroundColor Red; $Ok = $false; }
+        else {$Ok = $true; }
+    } until ($Ok)
+    Write-Host "Saved from evil: $global:SavedPerson" -ForegroundColor Green;
+}
+
+<# Handles the Little Girl recieving her instructions #>
+function PromptLittleGirl {
+    Loading;
+    Read-Host -Prompt "Role: The Little Girl can open their eyes at any time and peek whenever they want. The downside to this is they might get caught. Press enter to continue";
+}
+
+<# Handles Cupid selecting who they want to love link #>
+function PromptCupid {
+    Loading;
+    $deadPerson = Read-Host -Prompt "Who do you want to love link together?";
+    Write-Host "Love Linked: $global:LoveLink1 , $global:LoveLink2" -ForegroundColor Yellow;
+}
+
+<# Handles the Demon Butler deciding if they want to let the Demon Dog out #>
+function PromptDemonButler {
+    Loading;
+    do {
+        $global:DogIsOut = Read-Host -Prompt "Do you want to let your dog out for the night? Y/N";
+        if ($global:DogIsOut -eq "Y") {$global:DogIsOut = $true; $Ok = $true; }
+        elseif ($global:DogIsOut -eq "N") {$global:DogIsOut = $false; $Ok = $true; }
+        else {Write-Host "That's not a Y or N." -ForegroundColor Red; $Ok = $false; }
+    } until ($Ok)
+    if ($global:DogIsOut) {Write-Host "The Demon Dog has been released!" -ForegroundColor Yellow; }
+    else {Write-Host "The Demon Dog has been locked up." -ForegroundColor Yellow; }
+}
+
+<# Handles the Demon Dog selecting who they want to kill #>
+function PromptDemonDog {
+    Loading;
+    do {
+        $deadPerson = Read-Host -Prompt "Who does the Demon Dog want to kill?";
+        if ($deadPerson -in $global:PlayerArray -eq $false) {Write-Host "That's not a player!" -ForegroundColor Red; $Ok = $false; }
+        elseif ($deadPerson -eq $global:DemonDog) {Write-Host "You can't kill yourself!" -ForegroundColor Red; $Ok = $false; }
+        else {$Ok = $true; }
+    } until ($Ok)
+    if ($global:DogIsOut) {
+        if ($deadPerson -ne $global:SavedPerson) {
+            if ($deadPerson -eq $global:Doctor) {
+                $global:Doctor = $null;
+                Write-Host "$deadPerson, the Doctor was killed." -ForegroundColor Yellow;
+                $global:GoodGuys = $global:GoodGuys - 1;
+            }
+            elseif ($deadPerson -eq $global:LittleGirl) {
+                $global:LittleGirl = $null;
+                Write-Host "$deadPerson, the Little Girl was killed." -ForegroundColor Yellow;
+                $global:GoodGuys = $global:GoodGuys - 1; 
+            }
+            elseif ($deadPerson -eq $global:Cupid) {
+                $global:Cupid = $null;
+                Write-Host "$deadPerson, Cupid was killed." -ForegroundColor Yellow;
+                $global:GoodGuys = $global:GoodGuys - 1;
+            }
+            elseif ($deadPerson -eq $global:DemonButler) {
+                $global:DemonButler = $null;
+                Write-Host "$deadPerson, the Demon Butler was killed." -ForegroundColor Yellow;
+                $global:GoodGuys = $global:GoodGuys - 1;
+            }
+            elseif ($deadPerson -in $global:WereWolvesArray) {
+                $global:WereWolvesArray -replace $deadPerson, $null;
+                Write-Host "$deadPerson, a Werewolf was killed." -ForegroundColor Yellow;
+                $global:BadGuys = $global:Badguys - 1;
+            }
+            elseif ($deadPerson -eq $global:OldMan) {
+                $global:OldMan = $null;
+                Write-Host "$deadPerson, the Old Man was killed." -ForegroundColor Yellow;
+                $global:GoodGuys = $global:GoodGuys - 1;
+            }
+            else {
+                Write-Host "$deadPerson, a villager was killed." -ForegroundColor Yellow;
+                $global:GoodGuys = $global:GoodGuys - 1;
+            }
+            $global:PlayerArray -replace $deadPerson, $null;
+        }
+        else {Write-Host "$deadPerson was saved by the Doctor." -ForegroundColor Yellow; }
+    } else {Write-Host "The Demon Dog was not released tonight." -ForegroundColor Yellow; }
+}
+
+<# Handles the OldMan selecting who they want to take with them #>
+function PromptOldMan {
+    Loading;
+    do {
+        $deadPerson = Read-Host -Prompt "Who do the Werewolves want to kill?";
+        if ($deadPerson -in $global:PlayerArray -eq $false) {Write-Host "That's not a player!" -ForegroundColor Red; $Ok = $false; }
+        elseif ($deadPerson -in $global:WereWolvesArray) {Write-Host "That's a fellow Werewolf!" -ForegroundColor Red; $Ok = $false; }
+        else {$Ok = $true; }
+    } until ($Ok)
+    if ($deadPerson -eq $global:Doctor) {$global:Doctor = $null; }
+    elseif ($deadPerson -eq $global:LittleGirl) {$global:LittleGirl = $null; }
+    elseif ($deadPerson -eq $global:Cupid) {$global:Cupid = $null; }
+    elseif ($deadPerson -eq $global:DemonButler) {$global:DemonButler = $null; }
+    elseif ($deadPerson -eq $global:DemonDog) {$global:DemonDog -replace $deadPerson, $null; }
+    elseif ($deadPerson -eq $global:OldMan) {$global:OldMan = $null; }
+    else {$global:PlayerArray -replace $deadPerson, $null; }
 }
 
 
 <# Handles the act of playing the game until all of one side are dead. #>
 function PlayGame {
-    Loading;
     for ($i = 1; ($global:BadGuys -ne 0) -and ($global:GoodGuys -ne 0); $i++) {
+        Loading;
         Write-Host "Night $i" -ForegroundColor Yellow;
-        PromptWereWolves;
-        PromptDoctor;
-        if($i -eq 1) {
-            PromptLittleGirl;
-            PromptCupid;
+        if ($global:Doctor -ne $null) {PromptDoctor; } # Doctor goes first so that way he can save people
+        if ($i -eq 1) {
+            if ($global:LittleGirl -ne $null) {PromptLittleGirl;}
+            if ($global:Cupid -ne $null) {PromptCupid;}
         }
-        PromptDemonButler;
-        PromptDemonDog;
-        PromptOldMan;
+        if ($global:DemonButler -ne $null) {PromptDemonButler; }
+        if ($global:DemonDog -ne $null) {PromptDemonDog; }
+        if ($global:OldMan -ne $null) {PromptOldMan; }
+        if ($global:WereWolvesArray -ne $null) {PromptWereWolves; } # Wolves go last so that way they don't kill the dog first
+        $global:SavedPerson = $null; # Reset the saved person
         WhosWho;
-        $global:BadGuys = $global:BadGuys - 1;
     }
+    GameOver;
 }
+
 <# Handles the end game results being displayed and who won. #>
 function GameOver {
     Loading
     WhosWho;
     Loading;
-    if($global:BadGuys -eq 0) {Read-Host -Prompt "The villagers win!";}
-    else{Read-Host -Prompt "The bad guys win!";}
+    if ($global:BadGuys -eq 0) {Read-Host -Prompt "The villagers win!"; }
+    else {Read-Host -Prompt "The bad guys win!"; }
 }
 
 <# Main function, handles the Intro for the game,
