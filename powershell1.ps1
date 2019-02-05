@@ -50,57 +50,43 @@ function Loading {
 <# Handles the selection of the number of players #>
 function NumberOfPlayers {
     Loading;
+    $global:PlayersHashTable = [ordered]@{};
     do {
         $WontWork = "That won't work!";
-        $InputString = Read-Host -Prompt "How many players are there?"; # Initialize number of players
-        $global:NumberOfPlayers = $InputString -as [Int];
+        $numberOfPlayersInputString = Read-Host -Prompt "How many players are there?"; # Initialize number of players
+        $global:NumberOfPlayers = $numberOfPlayersInputString -as [Int];
         # Make sure a right value was chosen.
-        if ($NULL -eq $global:NumberOfPlayers) {Write-Host $WontWork -ForegroundColor Red; }
-        elseif ($global:NumberOfPlayers -eq 0) {Write-Host $WontWork -ForegroundColor Red; }
-        elseif ($global:NumberOfPlayers -eq 1) {Write-Host $WontWork -ForegroundColor Red; }
-        elseif ($global:NumberOfPlayers -eq 2) {Write-Host $WontWork -ForegroundColor Red; }
-        elseif ($global:NumberOfPlayers -eq 3) {Write-Host $WontWork -ForegroundColor Red; }
+        if (($NULL -eq $global:NumberOfPlayers) -or
+            ($global:NumberOfPlayers -eq 0) -or
+            ($global:NumberOfPlayers -eq 1) -or
+            ($global:NumberOfPlayers -eq 2) -or
+            ($global:NumberOfPlayers -eq 3)) {
+            Write-Host $WontWork -ForegroundColor Red; $Ok = $false;
+        }
         else {$Ok = $true; }
+    } until($Ok)
+    # Populates the hash table for the players
+    for ($i = 1; $i -le $global:NumberOfPlayers; $i++) {
+        do {
+            $inputString = Read-Host -Prompt "Enter the name of Player $i";
+            if ("" -eq $inputString) {
+                Write-Host $WontWork -ForegroundColor Red; $Ok = $false;
+            }
+            elseif ($global:PlayersHashTable.Contains($inputString)) {
+                Write-Host = "There's already someone called that!" -ForegroundColor Red; $Ok = $false;
+            }
+            else {$Ok = $true; }
+        } until ($Ok)
+        $global:PlayersHashTable[$inputString] = "Villager $i";
     }
-    until($Ok)
     Loading;
-    Write-Host "We're playing with $NumberOfPlayers players!"
+    $global:PlayersHashTable;
 }
 
 <# Play the intro for Werewolves #>
 function WerewolvesIntro {
     Loading;
     Write-Host " ~ Werewolves ~ " -ForegroundColor Red -BackgroundColor Black;
-}
-
-<# Function that takes how many players their are and asks for their names #>
-function GetPlayerNames {
-    Loading;
-    # For loop that iterates through until all players have names
-    for ($i = 0; $i -lt $global:NumberOfPlayers; $i++) {
-        $plusone = $i + 1;
-        do {
-            $currentPlayerName = Read-Host -Prompt "Enter the name of Player $plusone ";
-            if ($global:PlayerArray[$i - 1] -eq $currentPlayerName) {
-                Write-Host = "That's the same name!" -ForegroundColor Red; $Ok = $false; 
-            }
-            elseif ($null -eq $currentPlayerName) {
-                Write-Host = "A name cannot be blank!" -ForegroundColor Red; $Ok = $false;
-            }
-            elseif ($currentPlayerName -in $global:PlayerArray) {
-                Write-Host = "There's already someone called that!" -ForegroundColor Red; $Ok = $false;
-            }
-            else {
-                $global:PlayerArray[$i] = $currentPlayerName;
-                $Ok = $true;
-            }
-        }
-        until($Ok)
-    }
-    Start-Sleep -m $MS;
-    Write-Host "";
-    Start-Sleep -m $MS;
-    Write-Host "$global:PlayerArray";
 }
 
 <# Is resposible for prompting and storing the Werewolves #>
@@ -110,152 +96,133 @@ function ChooseWerewolves {
         $plusone = $i + 1;
         do {
             $currentPlayerName = Read-Host -Prompt "Enter the name of Werewolf $plusone ";
-            if ($currentPlayerName -in $global:PlayerArray -eq $false) {
-                Write-Host = "That's not a player!" -ForegroundColor Red; $Ok = $false;
+            if ($global:PlayersHashTable.Contains($currentPlayerName) -eq $false) {
+                Write-Host = "That's not a player!" -ForegroundColor Red;
+                $Ok = $false;
             }
-            elseif ($null -eq $currentPlayerName) {
-                Write-Host = "A Werewolf needs a name!" -ForegroundColor Red; $Ok = $false; 
-            }
-            elseif ($currentPlayerName -in $global:WereWolvesArray) {
-                Write-Host = "There's already a werewolf called that!" -ForegroundColor Red; $Ok = $false;
+            elseif ($global:PlayersHashTable.$currentPlayerName -eq "Werewolf") {
+                Write-Host = "There's already a werewolf called that!" -ForegroundColor Red;
+                $Ok = $false;
             }
             else {
-                $global:WereWolvesArray[$i] = $currentPlayerName;
+                $global:PlayersHashTable.Set_Item($currentPlayerName, "Werewolf");
                 $Ok = $true; 
             }
-        } 
-        until($Ok)
+        } until($Ok)
         $global:BadGuys++; # Adds one to the bad guy counter
     }
-    Start-Sleep -m $MS;
-    Write-Host "";
-    Start-Sleep -m $SS;
-    Write-Host "$global:WereWolvesArray" @BGT;
+    $global:PlayersHashTable;
 }
 
 <# Is resposible for prompting and storing the Doctor #>
 function ChooseDoctor {
     Loading;
     do {
-        $global:Doctor = Read-Host -Prompt "Enter the name of the Doctor ";
-        if ($global:Doctor -in $global:PlayerArray -eq $false) {
-            Write-Host = "That's not a player!" -ForegroundColor Red; $Ok = $false;
+        $currentPlayerName = Read-Host -Prompt "Enter the name of the Doctor ";
+        if ($global:PlayersHashTable.Contains($currentPlayerName) -eq $false) {
+            Write-Host = "That's not a player!" -ForegroundColor Red;
+            $Ok = $false;
         }
-        elseif (($global:Doctor -in $global:WereWolvesArray) -or
-            ($global:Doctor -eq $global:LittleGirl) -or
-            ($global:Doctor -eq $global:Cupid) -or
-            ($global:Doctor -eq $global:DemonButler) -or
-            ($global:Doctor -eq $global:DemonDog) -or
-            ($global:Doctor -eq $global:OldMan)) {
-            Write-Host = "They're already another character!" -ForegroundColor Red; $Ok = $false;
+        elseif ($global:PlayersHashTable.$currentPlayerName -eq "Werewolf") {
+            Write-Host = "They're already another character!" -ForegroundColor Red;
+            $Ok = $false;
         }
         else {
+            $global:PlayersHashTable.Set_Item($currentPlayerName, "Doctor");
             $Ok = $true; 
         }
-    } 
-    until($Ok)
-    Start-Sleep -m $SS; Write-Host ""; Start-Sleep -m $SS;
-    Write-Host "$global:Doctor" @GGT;
+    } until($Ok)
+    $global:PlayersHashTable;
 }
 
 <# Is resposible for prompting and storing the Little Girl #>
 function ChooseLittleGirl {
     Loading;
     do {
-        $global:LittleGirl = Read-Host -Prompt "Enter the name of the Little Girl ";
-        if ($global:LittleGirl -in $global:PlayerArray -eq $false) {
+        $currentPlayerName = Read-Host -Prompt "Enter the name of the Little Girl";
+        if ($global:PlayersHashTable.Contains($currentPlayerName) -eq $false) {
             Write-Host = "That's not a player!" -ForegroundColor Red; $Ok = $false;
         }
-        elseif (($global:LittleGirl -in $global:WereWolvesArray) -or
-            ($global:LittleGirl -eq $global:Doctor) -or
-            ($global:LittleGirl -eq $global:Cupid) -or
-            ($global:LittleGirl -eq $global:DemonButler) -or
-            ($global:LittleGirl -eq $global:DemonDog) -or
-            ($global:LittleGirl -eq $global:OldMan)) {
-            Write-Host = "They're already another character!" -ForegroundColor Red; $Ok = $false;
+        elseif (($global:PlayersHashTable.$currentPlayerName -eq "Werewolf") -or
+            ($global:PlayersHashTable.$currentPlayerName -eq "Doctor")) {
+            Write-Host = "They're already another character!" -ForegroundColor Red;
+            $Ok = $false;
         }
         else {
+            $global:PlayersHashTable.Set_Item($currentPlayerName, "Little Girl");
             $Ok = $true; 
         }
-    } 
-    until($Ok)
-    Start-Sleep -m $MS; Write-Host ""; Start-Sleep -m $MS;
-    Write-Host "$global:LittleGirl" @GGT;
+    } until($Ok)
+    $global:PlayersHashTable;
 }
 
 <# Is resposible for prompting and storing Cupid #>
 function ChooseCupid {
     Loading;
     do {
-        $global:Cupid = Read-Host -Prompt "Enter the name of Cupid ";
-        if ($global:Cupid -in $global:PlayerArray -eq $false) {
+        $currentPlayerName = Read-Host -Prompt "Enter the name of Cupid";
+        if ($global:PlayersHashTable.Contains($currentPlayerName) -eq $false) {
             Write-Host = "That's not a player!" -ForegroundColor Red; $Ok = $false;
         }
-        elseif (($global:Cupid -in $global:WereWolvesArray) -or
-            ($global:Cupid -eq $global:Doctor) -or
-            ($global:Cupid -eq $global:LittleGirl) -or
-            ($global:Cupid -eq $global:DemonButler) -or
-            ($global:Cupid -eq $global:DemonDog) -or
-            ($global:Cupid -eq $global:OldMan)) {
-            Write-Host = "They're already another character!" -ForegroundColor Red; $Ok = $false;
+        elseif (($global:PlayersHashTable.$currentPlayerName -eq "Werewolf") -or
+            ($global:PlayersHashTable.$currentPlayerName -eq "Doctor") -or
+            ($global:PlayersHashTable.$currentPlayerName -eq "Little Girl")) {
+            Write-Host = "They're already another character!" -ForegroundColor Red;
+            $Ok = $false;
         }
         else {
+            $global:PlayersHashTable.Set_Item($currentPlayerName, "Cupid");
             $Ok = $true; 
         }
-    }
-    until($Ok)
-    Start-Sleep -m $MS; Write-Host ""; Start-Sleep -m $MS;
-    Write-Host "$global:Cupid" @GGT;
+    } until($Ok)
+    $global:PlayersHashTable;
 }
 
 <# Is resposible for prompting and storing the Demon Butler #>
 function ChooseDemonButler {
     Loading;
     do {
-        $global:DemonButler = Read-Host -Prompt "Enter the name of the Demon Butler ";
-        if ($global:DemonButler -in $global:PlayerArray -eq $false) {
+        $currentPlayerName = Read-Host -Prompt "Enter the name of the Demon Butler";
+        if ($global:PlayersHashTable.Contains($currentPlayerName) -eq $false) {
             Write-Host = "That's not a player!" -ForegroundColor Red; $Ok = $false;
         }
-        elseif (($global:DemonButler -in $global:WereWolvesArray) -or
-            ($global:DemonButler -eq $global:Doctor) -or
-            ($global:DemonButler -eq $global:LittleGirl) -or
-            ($global:DemonButler -eq $global:Cupid) -or
-            ($global:DemonButler -eq $global:DemonDog) -or
-            ($global:DemonButler -eq $global:OldMan)) {
-            Write-Host = "They're already another character!" -ForegroundColor Red; $Ok = $false;
+        elseif (($global:PlayersHashTable.$currentPlayerName -eq "Werewolf") -or
+            ($global:PlayersHashTable.$currentPlayerName -eq "Doctor") -or
+            ($global:PlayersHashTable.$currentPlayerName -eq "Little Girl") -or
+            ($global:PlayersHashTable.$currentPlayerName -eq "Cupid")) {
+            Write-Host = "They're already another character!" -ForegroundColor Red;
+            $Ok = $false;
         }
         else {
+            $global:PlayersHashTable.Set_Item($currentPlayerName, "Demon Butler");
             $Ok = $true; 
         }
-    } 
-    until($Ok)
-    Start-Sleep -m $MS; Write-Host ""; Start-Sleep -m $MS;
-    Write-Host "$global:DemonButler" @GGT;
+    } until($Ok)
+    $global:PlayersHashTable;
 }
 
 <# Is resposible for prompting and storing the Demon Dog #>
 function ChooseDemonDog {
     Loading;
     do {
-        $global:DemonDog = Read-Host -Prompt "Enter the name of the Demon Dog ";
-        if ($global:DemonDog -in $global:PlayerArray -eq $false) {
+        $currentPlayerName = Read-Host -Prompt "Enter the name of the Demon Dog";
+        if ($global:PlayersHashTable.Contains($currentPlayerName) -eq $false) {
             Write-Host = "That's not a player!" -ForegroundColor Red; $Ok = $false;
         }
-        elseif (($global:DemonDog -in $global:WereWolvesArray) -or
-            ($global:DemonDog -eq $global:Doctor) -or
-            ($global:DemonDog -eq $global:LittleGirl) -or
-            ($global:DemonDog -eq $global:Cupid) -or
-            ($global:DemonDog -eq $global:DemonButler) -or
-            ($global:DemonDog -eq $global:OldMan)) {
-            Write-Host = "They're already another character!" -ForegroundColor Red; $Ok = $false;
+        elseif (($global:PlayersHashTable.$currentPlayerName -eq "Werewolf") -or
+            ($global:PlayersHashTable.$currentPlayerName -eq "Doctor") -or
+            ($global:PlayersHashTable.$currentPlayerName -eq "Little Girl") -or
+            ($global:PlayersHashTable.$currentPlayerName -eq "Cupid") -or
+            ($global:PlayersHashTable.$currentPlayerName -eq "Demon Butler")) {
+            Write-Host = "They're already another character!" -ForegroundColor Red;
+            $Ok = $false;
         }
         else {
+            $global:PlayersHashTable.Set_Item($currentPlayerName, "Demon Dog");
             $Ok = $true; 
         }
-    } 
-    until($Ok)
-    Start-Sleep -m $MS; Write-Host ""; Start-Sleep -m $MS;
-    Write-Host "$global:DemonDog" @BGT ;
+    } until($Ok)
+    $global:PlayersHashTable;
     $global:BadGuys++; # Adds one to the bad guy counter
 }
 
@@ -263,25 +230,25 @@ function ChooseDemonDog {
 function ChooseOldMan {
     Loading;
     do {
-        $global:OldMan = Read-Host -Prompt "Enter the name of the Old Man ";
-        if ($global:OldMan -in $global:PlayerArray -eq $false) {
+        $currentPlayerName = Read-Host -Prompt "Enter the name of the Old Man";
+        if ($global:PlayersHashTable.Contains($currentPlayerName) -eq $false) {
             Write-Host = "That's not a player!" -ForegroundColor Red; $Ok = $false;
         }
-        elseif (($global:OldMan -in $global:WereWolvesArray) -or
-            ($global:OldMan -eq $global:Doctor) -or
-            ($global:OldMan -eq $global:LittleGirl) -or
-            ($global:OldMan -eq $global:Cupid) -or
-            ($global:OldMan -eq $global:DemonButler) -or
-            ($global:OldMan -eq $global:DemonDog)) {
-            Write-Host = "They're already another character!" -ForegroundColor Red; $Ok = $false;
+        elseif (($global:PlayersHashTable.$currentPlayerName -eq "Werewolf") -or
+            ($global:PlayersHashTable.$currentPlayerName -eq "Doctor") -or
+            ($global:PlayersHashTable.$currentPlayerName -eq "Little Girl") -or
+            ($global:PlayersHashTable.$currentPlayerName -eq "Cupid") -or
+            ($global:PlayersHashTable.$currentPlayerName -eq "Demon Butler") -or
+            ($global:PlayersHashTable.$currentPlayerName -eq "Demon Dog")) {
+            Write-Host = "They're already another character!" -ForegroundColor Red;
+            $Ok = $false;
         }
         else {
+            $global:PlayersHashTable.Set_Item($currentPlayerName, "Old Man");
             $Ok = $true; 
         }
-    } 
-    until($Ok)
-    Start-Sleep -m $MS; Write-Host ""; Start-Sleep -m $MS;
-    Write-Host "$global:OldMan" @GGT;
+    } until($Ok)
+    $global:PlayersHashTable;
 }
 
 <# Is responisble for calculating and prompting for the different characters in each game #>
@@ -293,7 +260,7 @@ function ChooseCharacters {
         ChooseWerewolves;
         ChooseDoctor;
     }
-    elseif ($global:NumberOfPlayers -le 5) {
+    elseif ($global:NumberOfPlayers -le 6) {
         $global:WereWolvesArray = @(1);
         ChooseWerewolves;
         ChooseDoctor;
@@ -330,26 +297,7 @@ function ChooseCharacters {
 
 function WhosWho {
     Loading;
-    $isDead = "";
-    Write-Host "Werewolves: $global:WereWolvesArray" @BGT; # Werewolves' Status
-
-    if ($global:Doctor -eq $null) {$isDead = "...is dead."; } # Doctor's Status
-    Write-Host "Doctor: $global:Doctor $isDead" @GGT;
-
-    if ($global:LittleGirl -eq $null) {$isDead = "...is dead."; } # Little Girl's Status
-    Write-Host "Little Girl: $global:LittleGirl $isDead" @GGT;
-
-    if ($global:Cupid -eq $null) {$isDead = "...is dead."; } # Cupid's Status
-    Write-Host "Cupid: $global:Cupid $isDead" @GGT;
-
-    if ($global:DemonButler -eq $null) {$isDead = "...is dead."; } # Demon Butler's Status
-    Write-Host "Demon Butler: $global:DemonButler $isDead" @GGT;
-
-    if ($global:DemonDog -eq $null) {$isDead = "...is dead."; } # Demon Dog's Status
-    Write-Host "Demon Dog: $global:DemonDog $isDead" @BGT;
-
-    if ($global:OldMan -eq $null) {$isDead = "...is dead."; } # Old Man's Status
-    Write-Host "Old Man: $global:OldMan $isDead" @GGT;
+    $global:PlayersHashTable;
 
     Write-Host "";
     Write-Host "Number of Good Guys: $global:GoodGuys" @GGT;
@@ -361,46 +309,19 @@ function PromptWereWolves {
     Loading;
     do {
         $deadPerson = Read-Host -Prompt "Who do the Werewolves want to kill?";
-        if ($deadPerson -in $global:PlayerArray -eq $false) {Write-Host "That's not a player!" -ForegroundColor Red; $Ok = $false; }
-        elseif ($deadPerson -in $global:WereWolvesArray) {Write-Host "That's a fellow Werewolf!" -ForegroundColor Red; $Ok = $false; }
+        if ($global:PlayersHashTable.Contains($deadPerson) -eq $false) {Write-Host "That's not a player!" -ForegroundColor Red; $Ok = $false; }
+        elseif ($global:PlayersHashTable.$deadPerson -eq "Werewolf") {Write-Host "That's a fellow Werewolf!" -ForegroundColor Red; $Ok = $false; }
         else {$Ok = $true; }
     } until ($Ok)
     if ($deadPerson -ne $global:SavedPerson) {
-        if ($deadPerson -eq $global:Doctor) {
-            $global:Doctor = $null;
-            Write-Host "$deadPerson, the Doctor was killed." -ForegroundColor Yellow;
-            $global:GoodGuys = $global:GoodGuys - 1;
-        }
-        elseif ($deadPerson -eq $global:LittleGirl) {
-            $global:LittleGirl = $null;
-            Write-Host "$deadPerson, the Little Girl was killed." -ForegroundColor Yellow;
-            $global:GoodGuys = $global:GoodGuys - 1; 
-        }
-        elseif ($deadPerson -eq $global:Cupid) {
-            $global:Cupid = $null;
-            Write-Host "$deadPerson, Cupid was killed." -ForegroundColor Yellow;
-            $global:GoodGuys = $global:GoodGuys - 1;
-        }
-        elseif ($deadPerson -eq $global:DemonButler) {
-            $global:DemonButler = $null;
-            Write-Host "$deadPerson, the Demon Butler was killed." -ForegroundColor Yellow;
-            $global:GoodGuys = $global:GoodGuys - 1;
-        }
-        elseif ($deadPerson -eq $global:DemonDog) {
-            $global:DemonDog = $null;
-            Write-Host "$deadPerson, the Demon Dog was killed." -ForegroundColor Yellow;
-            $global:BadGuys = $global:Badguys - 1;
-        }
-        elseif ($deadPerson -eq $global:OldMan) {
-            $global:OldMan = $null;
-            Write-Host "$deadPerson, the Old Man was killed." -ForegroundColor Yellow;
-            $global:GoodGuys = $global:GoodGuys - 1;
-        }
-        else {
-            Write-Host "$deadPerson, a villager was killed." -ForegroundColor Yellow;
-            $global:GoodGuys = $global:GoodGuys - 1;
-        }
-        $global:PlayerArray -replace $deadPerson, $null;
+        if ($global:PlayersHashTable.$deadPerson -eq "Doctor") {Write-Host "$deadPerson, the Doctor was killed." -ForegroundColor Yellow; $global:GoodGuys = $global:GoodGuys - 1; }
+        elseif ($global:PlayersHashTable.$deadPerson -eq "Little Girl") {Write-Host "$deadPerson, the Little Girl was killed." -ForegroundColor Yellow; $global:GoodGuys = $global:GoodGuys - 1; }
+        elseif ($global:PlayersHashTable.$deadPerson -eq "Cupid") {Write-Host "$deadPerson, Cupid was killed." -ForegroundColor Yellow; $global:GoodGuys = $global:GoodGuys - 1; }
+        elseif ($global:PlayersHashTable.$deadPerson -eq "Demon Butler") {Write-Host "$deadPerson, the Demon Butler was killed." -ForegroundColor Yellow; $global:GoodGuys = $global:GoodGuys - 1; }
+        elseif ($global:PlayersHashTable.$deadPerson -eq "Demon Dog") {Write-Host "$deadPerson, the Demon Dog was killed." -ForegroundColor Yellow; $global:BadGuys = $global:BadGuys - 1; }
+        elseif ($global:PlayersHashTable.$deadPerson -eq "Old Man") {Write-Host "$deadPerson, the Old Man was killed." -ForegroundColor Yellow; $global:OldManRevenge = $true; $global:GoodGuys = $global:GoodGuys - 1; }
+        else {Write-Host "$deadPerson, a villager was killed." -ForegroundColor Yellow; $global:GoodGuys = $global:GoodGuys - 1; }
+        $global:PlayersHashTable.Remove($deadPerson);
     }
     else {Write-Host "$deadPerson was saved by the Doctor." -ForegroundColor Yellow; }
 }
@@ -410,7 +331,7 @@ function PromptDoctor {
     Loading;
     do {
         $global:SavedPerson = Read-Host -Prompt "Who does the Doctor want to save?";
-        if ($global:SavedPerson -in $global:PlayerArray -eq $false) {Write-Host "That's not a player!" -ForegroundColor Red; $Ok = $false; }
+        if ($global:PlayersHashTable.Contains($global:SavedPerson) -eq $false) {Write-Host "That's not a player!" -ForegroundColor Red; $Ok = $false; }
         else {$Ok = $true; }
     } until ($Ok)
     Write-Host "Saved from evil: $global:SavedPerson" -ForegroundColor Green;
@@ -425,8 +346,21 @@ function PromptLittleGirl {
 <# Handles Cupid selecting who they want to love link #>
 function PromptCupid {
     Loading;
-    $deadPerson = Read-Host -Prompt "Who do you want to love link together?";
-    Write-Host "Love Linked: $global:LoveLink1 , $global:LoveLink2" -ForegroundColor Yellow;
+    $global:LoveLinkHashTable = [ordered]@{};
+    do {
+        $loveLink1 = Read-Host -Prompt "Who do you want to love link first?";
+        if ($global:PlayersHashTable.Contains($loveLink1) -eq $false) {Write-Host "That's not a player!" -ForegroundColor Red; $Ok = $false; }
+        else {$Ok = $true; }
+    } until ($Ok)
+    do {
+        $loveLink2 = Read-Host -Prompt "Who do you want to love link second?";
+        if ($global:PlayersHashTable.Contains($loveLink2) -eq $false) {Write-Host "That's not a player!" -ForegroundColor Red; $Ok = $false; }
+        elseif ($global:LoveLinkHashTable.Contains($loveLink2) -eq $true) {Write-Host "That's the same player!" -ForegroundColor Red; $Ok = $false; }
+        else {$Ok = $true; }
+    } until ($Ok)
+    $global:LoveLinkHashTable[$loveLink1] = "$loveLink2";
+    $global:LoveLinkHashTable[$loveLink2] = "$loveLink1";
+    $global:LoveLinkHashTable;
 }
 
 <# Handles the Demon Butler deciding if they want to let the Demon Dog out #>
@@ -447,98 +381,216 @@ function PromptDemonDog {
     Loading;
     do {
         $deadPerson = Read-Host -Prompt "Who does the Demon Dog want to kill?";
-        if ($deadPerson -in $global:PlayerArray -eq $false) {Write-Host "That's not a player!" -ForegroundColor Red; $Ok = $false; }
-        elseif ($deadPerson -eq $global:DemonDog) {Write-Host "You can't kill yourself!" -ForegroundColor Red; $Ok = $false; }
+        if ($global:PlayersHashTable.Contains($deadPerson) -eq $false) {Write-Host "That's not a player!" -ForegroundColor Red; $Ok = $false; }
         else {$Ok = $true; }
     } until ($Ok)
     if ($global:DogIsOut) {
         if ($deadPerson -ne $global:SavedPerson) {
-            if ($deadPerson -eq $global:Doctor) {
-                $global:Doctor = $null;
+            if ($global:PlayersHashTable.$deadPerson -eq "Doctor") {
                 Write-Host "$deadPerson, the Doctor was killed." -ForegroundColor Yellow;
                 $global:GoodGuys = $global:GoodGuys - 1;
             }
-            elseif ($deadPerson -eq $global:LittleGirl) {
-                $global:LittleGirl = $null;
+            elseif ($global:PlayersHashTable.$deadPerson -eq "Little Girl") {
                 Write-Host "$deadPerson, the Little Girl was killed." -ForegroundColor Yellow;
-                $global:GoodGuys = $global:GoodGuys - 1; 
+                $global:GoodGuys = $global:GoodGuys - 1;
             }
-            elseif ($deadPerson -eq $global:Cupid) {
-                $global:Cupid = $null;
+            elseif ($global:PlayersHashTable.$deadPerson -eq "Cupid") {
                 Write-Host "$deadPerson, Cupid was killed." -ForegroundColor Yellow;
                 $global:GoodGuys = $global:GoodGuys - 1;
             }
-            elseif ($deadPerson -eq $global:DemonButler) {
-                $global:DemonButler = $null;
+            elseif ($global:PlayersHashTable.$deadPerson -eq "Demon Butler") {
                 Write-Host "$deadPerson, the Demon Butler was killed." -ForegroundColor Yellow;
                 $global:GoodGuys = $global:GoodGuys - 1;
             }
-            elseif ($deadPerson -in $global:WereWolvesArray) {
-                $global:WereWolvesArray -replace $deadPerson, $null;
+            elseif ($global:PlayersHashTable.$deadPerson -eq "Werewolf") {
                 Write-Host "$deadPerson, a Werewolf was killed." -ForegroundColor Yellow;
-                $global:BadGuys = $global:Badguys - 1;
+                $global:BadGuys = $global:BadGuys - 1;
             }
-            elseif ($deadPerson -eq $global:OldMan) {
-                $global:OldMan = $null;
+            elseif ($global:PlayersHashTable.$deadPerson -eq "Old Man") {
                 Write-Host "$deadPerson, the Old Man was killed." -ForegroundColor Yellow;
+                $global:OldManRevenge = $true;
                 $global:GoodGuys = $global:GoodGuys - 1;
             }
             else {
                 Write-Host "$deadPerson, a villager was killed." -ForegroundColor Yellow;
                 $global:GoodGuys = $global:GoodGuys - 1;
             }
-            $global:PlayerArray -replace $deadPerson, $null;
+            $global:PlayersHashTable.Remove($deadPerson);
         }
         else {Write-Host "$deadPerson was saved by the Doctor." -ForegroundColor Yellow; }
-    } else {Write-Host "The Demon Dog was not released tonight." -ForegroundColor Yellow; }
+    }
+    else {Write-Host "The Demon Dog was not released tonight." -ForegroundColor Yellow; }
 }
 
 <# Handles the OldMan selecting who they want to take with them #>
 function PromptOldMan {
     Loading;
+    if ($global:OldManRevenge) {
+        do {
+            $deadPerson = Read-Host -Prompt "Who does the Old Man want to take with him?";
+            if ($global:PlayersHashTable.Contains($deadPerson) -eq $false) {Write-Host "That's not a player!" -ForegroundColor Red; $Ok = $false; }
+            else {$Ok = $true; }
+        } until ($Ok)
+        if ($deadPerson -ne $global:SavedPerson) {
+            if ($global:PlayersHashTable.$deadPerson -eq "Doctor") {
+                Write-Host "$deadPerson, the Doctor was killed." -ForegroundColor Yellow;
+                $global:GoodGuys = $global:GoodGuys - 1;
+            }
+            elseif ($global:PlayersHashTable.$deadPerson -eq "Little Girl") {
+                Write-Host "$deadPerson, the Little Girl was killed." -ForegroundColor Yellow;
+                $global:GoodGuys = $global:GoodGuys - 1;
+            }
+            elseif ($global:PlayersHashTable.$deadPerson -eq "Cupid") {
+                Write-Host "$deadPerson, Cupid was killed." -ForegroundColor Yellow;
+                $global:GoodGuys = $global:GoodGuys - 1;
+            }
+            elseif ($global:PlayersHashTable.$deadPerson -eq "Demon Butler") {
+                Write-Host "$deadPerson, the Demon Butler was killed." -ForegroundColor Yellow;
+                $global:GoodGuys = $global:GoodGuys - 1;
+            }
+            elseif ($global:PlayersHashTable.$deadPerson -eq "Werewolf") {
+                Write-Host "$deadPerson, a Werewolf was killed." -ForegroundColor Yellow;
+                $global:BadGuys = $global:BadGuys - 1;
+            }
+            elseif ($global:PlayersHashTable.$deadPerson -eq "Demon Dog") {
+                Write-Host "$deadPerson, the Demon Dog was killed." -ForegroundColor Yellow;
+                $global:BadGuys = $global:BadGuys - 1;
+            }
+            else {
+                Write-Host "$deadPerson, a villager was killed." -ForegroundColor Yellow;
+                $global:GoodGuys = $global:GoodGuys - 1;
+            }
+            $global:PlayersHashTable.Remove($deadPerson);
+        }
+        else {
+            Write-Host "$deadPerson was saved by the Doctor." -ForegroundColor Yellow;
+        }
+    }
+    else { Write-Host "It's not the Old Man's night."}
+}
+
+<# Function checks to see if one of the lovers has died. If they have, kills the other lover. #>
+function CheckLoveLink {
+    Loading;
+    if ($global:LoversDeadAlready -eq $false) {
+        # Check to make sure this method hasn't already killed someone
+        $loverThatIsDead = $global:LoveLinkHashTable.Keys | ? {$_ -notin $global:PlayersHashTable.Keys};
+        if ($loverThatIsDead -ne $NULL) {
+            $loverToKill = $global:LoveLinkHashTable.$loverThatIsDead;
+            Write-Host "$loverThatIsDead was dead, so $loverToKill died of a broken heart.";
+            if ($deadPerson -ne $global:SavedPerson) {
+                if ($global:PlayersHashTable.$loverToKill -eq "Doctor") {
+                    Write-Host "$loverToKill, the Doctor was killed." -ForegroundColor Yellow;
+                    $global:GoodGuys = $global:GoodGuys - 1;
+                }
+                elseif ($global:PlayersHashTable.$loverToKill -eq "Little Girl") {
+                    Write-Host "$loverToKill, the Little Girl was killed." -ForegroundColor Yellow;
+                    $global:GoodGuys = $global:GoodGuys - 1;
+                }
+                elseif ($global:PlayersHashTable.$loverToKill -eq "Cupid") {
+                    Write-Host "$loverToKill, Cupid was killed." -ForegroundColor Yellow;
+                    $global:GoodGuys = $global:GoodGuys - 1;
+                }
+                elseif ($global:PlayersHashTable.$loverToKill -eq "Demon Butler") {
+                    Write-Host "$loverToKill, the Demon Butler was killed." -ForegroundColor Yellow;
+                    $global:GoodGuys = $global:GoodGuys - 1;
+                }
+                elseif ($global:PlayersHashTable.$loverToKill -eq "Werewolf") {
+                    Write-Host "$loverToKill, a Werewolf was killed." -ForegroundColor Yellow;
+                    $global:BadGuys = $global:BadGuys - 1;
+                }
+                elseif ($global:PlayersHashTable.$loverToKill -eq "Demon Dog") {
+                    Write-Host "$loverToKill, the Demon Dog was killed." -ForegroundColor Yellow;
+                    $global:BadGuys = $global:BadGuys - 1;
+                }
+                elseif ($global:PlayersHashTable.$loverToKill -eq "Old Man") {
+                    Write-Host "$loverToKill, the Old Man was killed." -ForegroundColor Yellow;
+                    $global:OldManRevenge = $true;
+                    $global:GoodGuys = $global:GoodGuys - 1;
+                }
+                else {
+                    Write-Host "$deadPerson, a villager was killed." -ForegroundColor Yellow;
+                    $global:GoodGuys = $global:GoodGuys - 1;
+                }
+                $global:PlayersHashTable.Remove($loverToKill); # Remove the love linked person
+                $global:LoversDeadAlready = $true; # Make sure this method doesn't run again
+            }
+            else {Write-Host "Both lovers are still alive."; }
+        }
+    }
+}
+
+
+<# Function handles the trial during the day, and executing someone if it happens. #>
+function DayTrial {
+    Loading;
     do {
-        $deadPerson = Read-Host -Prompt "Who do the Werewolves want to kill?";
-        if ($deadPerson -in $global:PlayerArray -eq $false) {Write-Host "That's not a player!" -ForegroundColor Red; $Ok = $false; }
-        elseif ($deadPerson -in $global:WereWolvesArray) {Write-Host "That's a fellow Werewolf!" -ForegroundColor Red; $Ok = $false; }
+        $deadPerson = Read-Host -Prompt "Who will the villagers execute?";
+        if ($global:PlayersHashTable.Contains($deadPerson) -eq $false) {Write-Host "That's not a player!" -ForegroundColor Red; $Ok = $false; }
         else {$Ok = $true; }
     } until ($Ok)
-    if ($deadPerson -eq $global:Doctor) {$global:Doctor = $null; }
-    elseif ($deadPerson -eq $global:LittleGirl) {$global:LittleGirl = $null; }
-    elseif ($deadPerson -eq $global:Cupid) {$global:Cupid = $null; }
-    elseif ($deadPerson -eq $global:DemonButler) {$global:DemonButler = $null; }
-    elseif ($deadPerson -eq $global:DemonDog) {$global:DemonDog -replace $deadPerson, $null; }
-    elseif ($deadPerson -eq $global:OldMan) {$global:OldMan = $null; }
-    else {$global:PlayerArray -replace $deadPerson, $null; }
+    if ($global:PlayersHashTable.$deadPerson -eq "Doctor") {
+        Write-Host "$deadPerson, the Doctor was executed." -ForegroundColor Yellow;
+        $global:GoodGuys = $global:GoodGuys - 1;
+    }
+    elseif ($global:PlayersHashTable.$deadPerson -eq "Little Girl") {
+        Write-Host "$deadPerson, the Little Girl was executed." -ForegroundColor Yellow;
+        $global:GoodGuys = $global:GoodGuys - 1;
+    }
+    elseif ($global:PlayersHashTable.$deadPerson -eq "Cupid") {
+        Write-Host "$deadPerson, Cupid was executed." -ForegroundColor Yellow;
+        $global:GoodGuys = $global:GoodGuys - 1;
+    }
+    elseif ($global:PlayersHashTable.$deadPerson -eq "Demon Butler") {
+        Write-Host "$deadPerson, the Demon Butler was executed." -ForegroundColor Yellow;
+        $global:GoodGuys = $global:GoodGuys - 1;
+    }
+    elseif ($global:PlayersHashTable.$deadPerson -eq "Werewolf") {
+        Write-Host "$deadPerson, a Werewolf was executed." -ForegroundColor Yellow;
+        $global:BadGuys = $global:BadGuys - 1;
+    }
+    elseif ($global:PlayersHashTable.$deadPerson -eq "Demon Dog") {
+        Write-Host "$deadPerson, the Demon Dog was executed." -ForegroundColor Yellow;
+        $global:BadGuys = $global:BadGuys - 1;
+    }
+    else {
+        Write-Host "$deadPerson, a villager was executed." -ForegroundColor Yellow;
+        $global:GoodGuys = $global:GoodGuys - 1;
+    }
+    $global:PlayersHashTable.Remove($deadPerson);
 }
 
 
 <# Handles the act of playing the game until all of one side are dead. #>
 function PlayGame {
+    $global:LoversDeadAlready = $false;
     for ($i = 1; ($global:BadGuys -ne 0) -and ($global:GoodGuys -ne 0); $i++) {
         Loading;
-        Write-Host "Night $i" -ForegroundColor Yellow;
-        if ($global:Doctor -ne $null) {PromptDoctor; } # Doctor goes first so that way he can save people
-        if ($i -eq 1) {
-            if ($global:LittleGirl -ne $null) {PromptLittleGirl;}
-            if ($global:Cupid -ne $null) {PromptCupid;}
-        }
-        if ($global:DemonButler -ne $null) {PromptDemonButler; }
-        if ($global:DemonDog -ne $null) {PromptDemonDog; }
-        if ($global:OldMan -ne $null) {PromptOldMan; }
-        if ($global:WereWolvesArray -ne $null) {PromptWereWolves; } # Wolves go last so that way they don't kill the dog first
+        Write-Host "Night $i" -ForegroundColor Yellow; # Start of the night --- 
         $global:SavedPerson = $null; # Reset the saved person
+        if ($global:PlayersHashTable.Keys.Where( {$global:PlayersHashTable[$_] -eq "Doctor"}) -ne $null) {PromptDoctor; } # Doctor goes first so that way he can save people
+        if ($i -eq 1) {
+            if ($global:PlayersHashTable.Keys.Where( {$global:PlayersHashTable[$_] -eq "Little Girl"}) -ne $null) {PromptLittleGirl; }
+            if ($global:PlayersHashTable.Keys.Where( {$global:PlayersHashTable[$_] -eq "Cupid"}) -ne $null) {PromptCupid; }
+        }
+        if ($global:PlayersHashTable.Keys.Where( {$global:PlayersHashTable[$_] -eq "Demon Butler"}) -ne $null) {PromptDemonButler; }
+        if ($global:PlayersHashTable.Keys.Where( {$global:PlayersHashTable[$_] -eq "Demon Dog"}) -ne $null) {PromptDemonDog; }
+        if ($global:PlayersHashTable.Keys.Where( {$global:PlayersHashTable[$_] -eq "Old Man"}) -ne $null) {PromptOldMan; }
+        if ($global:PlayersHashTable.Keys.Where( {$global:PlayersHashTable[$_] -eq "Werewolf"}) -ne $null) {PromptWereWolves; } # Wolves go last so that way they don't kill the dog first
+        # End of the Night
+        CheckLoveLink;
+        Write-Host "Day $i" -ForegroundColor Yellow; # Start of the day and trial --- 
+        DayTrial;
+        CheckLoveLink;
         WhosWho;
     }
-    GameOver;
 }
 
 <# Handles the end game results being displayed and who won. #>
 function GameOver {
-    Loading
-    WhosWho;
     Loading;
-    if ($global:BadGuys -eq 0) {Read-Host -Prompt "The villagers win!"; }
-    else {Read-Host -Prompt "The bad guys win!"; }
+    if ($global:BadGuys -eq 0) {Write-Host "The villagers win!" -ForegroundColor Green; Read-Host; }
+    else {Write-Host "The bad guys win!" -ForegroundColor Red; Read-Host; }
 }
 
 <# Main function, handles the Intro for the game,
@@ -552,10 +604,9 @@ function PlayWerewolves {
     param()
     WerewolvesIntro;
     NumberOfPlayers;
-    $global:PlayerArray = 1..$global:NumberOfPlayers;
-    GetPlayerNames;
     ChooseCharacters;
     PlayGame;
+    GameOver;
 }
 
 # Startup
