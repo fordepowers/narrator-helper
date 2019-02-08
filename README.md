@@ -1,4 +1,4 @@
-# narrator-helper
+# werewolves-narrator-helper
 Hello user! This project is a work in progress, with two simple objectives:
 1. Create a command-line based application that will aid narrators in the playing of the game Werewolves.
 2. Take that command-line application and turn it into a full fleshed web application GUI, based on the React/Redux framework.
