@@ -9,20 +9,6 @@
     }
 }
 
-body, h1 {
-    font-family: "Raleway" sans-serif;
-    text-shadow: 0px 0px 10px black;
-}
-
-button {
-    background: transparent;
-    font-family: "Raleway" sans-serif;
-    text-shadow: 0px 0px 10px black;
-    color: whitesmoke;
-    align-content: center;
-    box-align: center;
-}
-
 body, html {
     height: 100%;
 }

@@ -20,7 +20,7 @@ let DogIsOut;
 function IntroductionPage() {
     if (confirm("Press 'Ok' to play Werewolves.")) {
         // Howl.play();
-        document.getElementById("middleDisplay").style.animation = "fadeOut 2s";
+        document.getElementById("middleDisplay").style.animation = "fadeOut 1.5s";
         document.getElementById("middleDisplay").style.opacity = "0";
     } else {throw new Error;}
 }
@@ -33,22 +33,14 @@ function NumberOfPlayersFunction() {
     let nameDisplayObject = [`Players:`];
     let Ok = false;
     while (Ok === false) {
-        var numberOfPlayersInputString = prompt("How many players are there?"); // Initialize number of players
-        NumberOfPlayers = numberOfPlayersInputString;
+        NumberOfPlayers = prompt("How many players are there?"); // Initialize number of players
         // Make sure a right value was chosen.
-        if ((NumberOfPlayers == 0) ||
-            (NumberOfPlayers == 1) ||
-            (NumberOfPlayers == 2) ||
-            (NumberOfPlayers == 3)) {
-            alert("That won't work!"); Ok = false;
+        if (NumberOfPlayers <= 3) {
+            alert("-That's not enough players!"); Ok = false;
         }
-        else if (numberOfPlayersInputString === "") {
-            alert("That won't work!"); 
-            Ok = false;
-        }
-        else if (NumberOfPlayers === null) {
-            alert("That won't work!"); 
-            Ok = false;
+        else if ((NumberOfPlayers === "") ||
+                (NumberOfPlayers === null)) {
+            alert("-That's not a number!"); Ok = false;
         }
         else {Ok = true; }
     }
@@ -59,7 +51,9 @@ function NumberOfPlayersFunction() {
         while (Ok === false) {
             let plusone = i + 1;
             let inputString = prompt(`Enter the name of Player ${plusone}`);
-            if ("" === inputString) {
+            if ((inputString === "") ||
+                (inputString === null) ||
+                (inputString === " ")) {
                 alert("That won't work!"); Ok = false;
             }
             else if (PlayersHashTable[inputString] === "Villager") {
@@ -338,9 +332,6 @@ function PromptOldMan() {
         // Calls the KillSomeone function and passes the deadperson to it
         KillSomeone(deadPerson, "Old Man");
     }
-    else {
-        alert("It's not the Old Man's night.");
-    }
 }
 
 /**
@@ -468,5 +459,5 @@ function PlayWerewolves() {
         ChooseCharacters();
         PlayGame();
         GameOver();
-    },2000);
+    },1500);
 }
