@@ -11,15 +11,18 @@ var NumberOfPlayers;
 let LoveLinkHashTable = {};
 let LoversDeadAlready;
 let DogIsOut;
+// var Howl = new Audio("http://soundbible.com/grab.php?id=1291&type=mp3");
+
 
 /**
  * Plays the introduction page, if the user declines, it breaks the program.
  */
 function IntroductionPage() {
-    if (confirm("Press 'Ok' to play Werewolves, 'Cancel' to stop:") == false) {
-        throw new Error;
-    }
-    return;
+    if (confirm("Press 'Ok' to play Werewolves.")) {
+        // Howl.play();
+        document.getElementById("middleDisplay").style.animation = "fadeOut 2s";
+        document.getElementById("middleDisplay").style.opacity = "0";
+    } else {throw new Error;}
 }
 
 /**
@@ -27,11 +30,11 @@ function IntroductionPage() {
  * and inputting them into a an object based on their names.
  */
 function NumberOfPlayersFunction() {
+    let nameDisplayObject = [`Players:`];
     let Ok = false;
     while (Ok === false) {
         var numberOfPlayersInputString = prompt("How many players are there?"); // Initialize number of players
-        var integer = parseInt(numberOfPlayersInputString, 10);
-        NumberOfPlayers = integer;
+        NumberOfPlayers = numberOfPlayersInputString;
         // Make sure a right value was chosen.
         if ((NumberOfPlayers == 0) ||
             (NumberOfPlayers == 1) ||
@@ -40,6 +43,10 @@ function NumberOfPlayersFunction() {
             alert("That won't work!"); Ok = false;
         }
         else if (numberOfPlayersInputString === "") {
+            alert("That won't work!"); 
+            Ok = false;
+        }
+        else if (NumberOfPlayers === null) {
             alert("That won't work!"); 
             Ok = false;
         }
@@ -60,11 +67,13 @@ function NumberOfPlayersFunction() {
             }
             else {
                 Ok = true;
-                PlayersHashTable[inputString] = "Villager"; 
+                PlayersHashTable[inputString] = "Villager";
+                nameDisplayObject.push(inputString);
             }
         }
     }
-    WhosWho();
+    alert(nameDisplayObject.join(`
+    `));
 }
 
 /**
@@ -203,10 +212,18 @@ function KillSomeone(deadPerson, WhoKilledThem) {
  * and how many Good and Bad Guys are left.
  */
 function WhosWho() {
-    alert(`Who's Who: 
-    `+ JSON.stringify(PlayersHashTable) + `
-    Good Guys: ${GoodGuys}
-    Bad Guys: ${BadGuys}`);
+    let output = JSON.stringify(PlayersHashTable);
+    let output1 = output.replace("{", "");
+    let output2 = output1.replace("}", "");
+    let output3 = output2.replace(/"/g, "");
+    let output4 = output3.replace(/:/g, ": ");
+    let output5 = output4.replace(/,/g, `
+    `);
+    alert(`Players Left: 
+    `+ output5 + `
+
+Good Guys: ${GoodGuys}
+Bad Guys: ${BadGuys}`);
 }
 
 /**
@@ -404,7 +421,6 @@ function DayTrial() {
 function PlayGame() {
     for (let i = 1; (BadGuys != 0) && (GoodGuys != 0); i++) {
         WhatHappenedLastNight = "Last night, "; // This is the string that prints out the events.
-        
         alert(`Night ${i}`); // Start of the night --- 
         
         SavedPerson = null; // Reset the saved person
@@ -418,7 +434,10 @@ function PlayGame() {
         if (Object.values(PlayersHashTable).indexOf('Old Man') > -1) {PromptOldMan(); }
         if (Object.values(PlayersHashTable).indexOf('Werewolf') > -1) {PromptWereWolves(); } // Wolves go last so that way they don't kill the dog first
         // End of the Night        
+        WhatHappenedLastNight = WhatHappenedLastNight.slice(0,-2);
+        WhatHappenedLastNight = WhatHappenedLastNight + ".";
         alert(WhatHappenedLastNight); // Print event list from the night
+        WhosWho();
         
         alert(`Day ${i}`); // Start of the day and trial ---
         
@@ -433,6 +452,7 @@ function PlayGame() {
 function GameOver() {
     if (BadGuys == 0) {alert("The villagers win!");}
     else {alert("The bad guys win!");}
+    location.reload();
 }
 
 /**
@@ -443,8 +463,10 @@ function GameOver() {
  */
 function PlayWerewolves() {
     IntroductionPage();
-    NumberOfPlayersFunction();
-    ChooseCharacters();
-    PlayGame();
-    GameOver();
+    setTimeout(function(){
+        NumberOfPlayersFunction();
+        ChooseCharacters();
+        PlayGame();
+        GameOver();
+    },2000);
 }
