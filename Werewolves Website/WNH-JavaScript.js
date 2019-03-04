@@ -4,7 +4,6 @@
 let PlayersHashTable = {};
 let NumberOfWereWolves = 0;
 let WhatHappenedLastNight;
-var wolves;
 var BadGuys = 0;
 var GoodGuys = 0;
 var NumberOfPlayers;
@@ -20,9 +19,11 @@ let DogIsOut;
 function IntroductionPage() {
     if (confirm("Press 'Ok' to play Werewolves.")) {
         // Howl.play();
-        document.getElementById("middleDisplay").style.animation = "fadeOut 1.5s";
-        document.getElementById("middleDisplay").style.opacity = "0";
-    } else {throw new Error;}
+    } else {
+        document.getElementById("middleDisplay").style.animation = "fading 1.5s";
+        document.getElementById("middleDisplay").style.opacity = "1";    
+        throw new Error;
+    }
 }
 
 /**
@@ -140,7 +141,7 @@ function ChooseCharacters() {
         ChoosePlayerCharacter("Cupid");
     }
     else if (NumberOfPlayers <= 12) {
-        wolves = NumberOfPlayers / 3;
+        var wolves = 3;
         NumberOfWereWolves = wolves;
         ChooseWerewolves();
         ChoosePlayerCharacter("Doctor");
@@ -150,7 +151,7 @@ function ChooseCharacters() {
         ChoosePlayerCharacter("Demon Dog"); BadGuys = BadGuys + 1;
     }
     else {
-        wolves = NumberOfPlayers / 3;
+        var wolves = NumberOfPlayers / 3;
         NumberOfWereWolves = wolves;
         ChooseWerewolves();
         ChoosePlayerCharacter("Doctor");
@@ -276,7 +277,8 @@ function PromptCupid() {
     }
     LoveLinkHashTable[loveLink1] = `Love Linked 1`;
     LoveLinkHashTable[loveLink2] = `Love Linked 2`;
-    alert(JSON.stringify(LoveLinkHashTable));
+    alert(`Love Linked: 
+    ` + `${loveLink1} & ${loveLink2} <3` );
     LoversDeadAlready = false;
 }
 
@@ -453,8 +455,10 @@ function GameOver() {
  * and actually playing the game until completion.
  */
 function PlayWerewolves() {
-    IntroductionPage();
+    document.getElementById("middleDisplay").style.animation = "fadeOut 1.5s";
+    document.getElementById("middleDisplay").style.opacity = "0";
     setTimeout(function(){
+        IntroductionPage();
         NumberOfPlayersFunction();
         ChooseCharacters();
         PlayGame();

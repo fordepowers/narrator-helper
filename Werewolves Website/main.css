@@ -62,11 +62,6 @@ audio:not([controls]) {
     display: none
 }
 
-a {
-    background-color: transparent;
-    -webkit-text-decoration-skip: objects
-}
-
 a:active, a:hover {
     outline-width: 0
 }
@@ -269,7 +264,8 @@ img {
 }
 
 a {
-    color: inherit
+    color: inherit;
+    text-shadow: 0px 0px 10px black;
 }
 
 .w3-table, .w3-table-all {
