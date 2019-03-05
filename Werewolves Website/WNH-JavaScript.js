@@ -172,17 +172,8 @@ function ChooseCharacters() {
 function KillSomeone(deadPerson, WhoKilledThem) {
     
     if (deadPerson != SavedPerson) {
-        if (PlayersHashTable[deadPerson] === "Doctor") {
-            GoodGuys = GoodGuys - 1; 
-        }
-        else if (PlayersHashTable[deadPerson] === "Little Girl") {
-            GoodGuys = GoodGuys - 1;
-        }
-        else if (PlayersHashTable[deadPerson] === "Cupid") {
-            GoodGuys = GoodGuys - 1; 
-        }
-        else if (PlayersHashTable[deadPerson] === "Demon Butler") {
-            GoodGuys = GoodGuys - 1;
+        if (PlayersHashTable[deadPerson] === "Werewolf") {
+            BadGuys = BadGuys - 1;
         }
         else if (PlayersHashTable[deadPerson] === "Demon Dog") {
             BadGuys = BadGuys - 1;
@@ -379,19 +370,7 @@ function DayTrial() {
             if (PlayersHashTable[deadPerson] === undefined) {alert("-That's not a player!"); Ok = false; }
             else {Ok = true; }
         }
-        if (PlayersHashTable[deadPerson] === "Doctor") {
-            GoodGuys = GoodGuys - 1;
-        }
-        else if (PlayersHashTable[deadPerson] === "Little Girl") {
-            GoodGuys = GoodGuys - 1;
-        }
-        else if (PlayersHashTable[deadPerson] === "Cupid") {
-            GoodGuys = GoodGuys - 1;
-        }
-        else if (PlayersHashTable[deadPerson] === "Demon Butler") {
-            GoodGuys = GoodGuys - 1;
-        }
-        else if (PlayersHashTable[deadPerson] === "Werewolf") {
+        if (PlayersHashTable[deadPerson] === "Werewolf") {
             BadGuys = BadGuys - 1;
         } 
         else if (PlayersHashTable[deadPerson] === "Demon Dog") {
@@ -423,6 +402,7 @@ function PlayGame() {
             if (Object.values(PlayersHashTable).indexOf('Cupid') > -1) {PromptCupid(); }
         }
         if (Object.values(PlayersHashTable).indexOf('Demon Butler') > -1) {PromptDemonButler(); }
+        else {DogIsOut = true;}
         if (Object.values(PlayersHashTable).indexOf('Demon Dog') > -1) {PromptDemonDog(); }
         if (Object.values(PlayersHashTable).indexOf('Old Man') > -1) {PromptOldMan(); }
         if (Object.values(PlayersHashTable).indexOf('Werewolf') > -1) {PromptWereWolves(); } // Wolves go last so that way they don't kill the dog first
