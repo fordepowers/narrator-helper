@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Werewolves</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <link href="https://fonts.googleapis.com/css?family=Merienda+One" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src="WNH-JavaScript.js"></script>
+    <style>
+        h1 {
+            font-family: 'Merienda One', cursive;
+            text-shadow: 0px 0px 10px black;
+            font-size: 58px !important
+        }
+
+        h3 {
+            margin-top: 0pt;
+            margin-bottom: 0pt;
+            text-align: center;
+            padding: 0;
+            font-family: "Open Sans", sans-serif;
+            margin: auto;
+            width: 100%;
+            text-shadow:
+                -1px -1px 0 #000,
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                1px 1px 0 #000;
+        }
+
+        button {
+            background: transparent;
+            font-family: 'Open Sans', sans-serif;
+            text-shadow: 0px 0px 10px black;
+            color: whitesmoke;
+            align-content: center;
+            box-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bgimg w3-display-container w3-text-white">
+        <div class="w3-display-topmiddle" id="middleDisplay" style="margin: auto; width: 90%;">
+            <h1 class="w3-animate-fading" style="text-align: center;">Roles</h1>
+            <hr class="w3-large w3-border-white w3-animate-zoom"
+                style="margin: auto; width: 60%; box-shadow: 0px 0px 5px black;">
+            <br>
+            <h3 class="w3-large w3-animate-zoom">Enter the number of
+                players you have, and this will show you what roles will be available.</h3>
+            <br>
+            <input class="w3-input w3-animate-fading" type="number" min="1" max="100" value="0"
+                style="display: block; margin: 0 auto;">
+            <br>
+            <button id="send-button" onClick="PlayWerewolves()" class="w3-xlarge w3-btn w3-animate-zoom"
+                style="display: block; margin: 0 auto; box-shadow: 0px 0px 5px black;">Go</button>
+        </div>
+        <div id="outputArea">
+
+        </div>
+        <div class="black-gradient-bottom"></div>
+        <div class="black-gradient-top"></div>
+        <ul class="MenuHeader">
+            <li class="MenuList"><a href="index.html">Game</a></li>
+            <li class="MenuList"><a href="guide.html">User Guide</a></li>
+            <li class="MenuList"><a href="roles.html" class="active">Roles</a></li>
+            <li class="MenuList"><a href="https://github.com/fordepowers/werewolves-narrator-helper"
+                    target="_blank">Github</a></li>
+        </ul>
+    </div>
+</body>
+
+</html>
