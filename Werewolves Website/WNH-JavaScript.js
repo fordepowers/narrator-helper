@@ -445,3 +445,64 @@ function PlayWerewolves() {
         GameOver();
     },1500);
 }
+
+/**
+ * Function that outputs the roles for a given number of
+ * players in the game.
+ */
+function GetRolesOutput() {
+    var players = document.getElementById("roles-input").value;
+    let roles = [];
+    let outputBadGuys = 0;
+    let outputGoodGuys = 0;
+    if (players < 4) {
+        roles.push("Not enough players...");
+    }
+    else if (players == 4) {
+        roles.push("<span style='color: red'>1 Werewolf</span>"); outputBadGuys = outputBadGuys + 1;
+        roles.push("<span style='color: green'>1 Doctor</span>");
+        roles.push("2 Villagers");
+    }
+    else if (players <= 5) {
+        roles.push("<span style='color: red'>2 Werewolves</span>"); outputBadGuys = outputBadGuys + 2;
+        roles.push("<span style='color: green'>1 Doctor</span>");
+        roles.push("<span style='color: green'>1 Little Girl</span>");
+        roles.push("1 Villager");
+    }
+    else if (players <= 8) {
+        roles.push("<span style='color: red'>2 Werewolves</span>"); outputBadGuys = outputBadGuys + 2;
+        roles.push("<span style='color: green'>1 Doctor</span>");
+        roles.push("<span style='color: green'>1 Little Girl</span>");
+        roles.push("<span style='color: green'>1 Cupid</span>");
+        let villagers = players - outputBadGuys - 3;
+        roles.push(`${villagers} Villagers`);
+    }
+    else if (players <= 12) {
+        roles.push("<span style='color: red'>3 Werewolves</span>"); outputBadGuys = outputBadGuys + 3;
+        roles.push("<span style='color: green'>1 Doctor</span>");
+        roles.push("<span style='color: green'>1 Little Girl</span>");
+        roles.push("<span style='color: green'>1 Cupid</span>");
+        roles.push("<span style='color: red'>1 Demon Dog</span>"); outputBadGuys = outputBadGuys + 1;
+        roles.push("<span style='color: green'>1 Demon Butler</span>");
+        let villagers = players - outputBadGuys - 4;
+        roles.push(`${villagers} Villagers`);
+    }
+    else {
+        let wolves = Math.floor(players / 3);
+        roles.push(`<span style='color: red'>${wolves} Werewolves</span>`); outputBadGuys = outputBadGuys + wolves;
+        roles.push("<span style='color: green'>1 Doctor</span>");
+        roles.push("<span style='color: green'>1 Little Girl</span>");
+        roles.push("<span style='color: green'>1 Cupid</span>");
+        roles.push("<span style='color: red'>1 Demon Dog</span>"); outputBadGuys = outputBadGuys + 1;
+        roles.push("<span style='color: green'>1 Demon Butler</span>");
+        roles.push("<span style='color: green'>1 Old Man</span>");
+        let villagers = players - outputBadGuys - 5;
+        roles.push(`${villagers} Villagers`);
+    }
+    outputGoodGuys = players - outputBadGuys;
+    roles.push(`Good Guys: <span style='color: green'>${outputGoodGuys}</span>`);
+    roles.push(`Bad Guys: <span style='color: red'>${outputBadGuys}</span>`);
+    rolesString = roles.toString()
+    rolesString = rolesString.replace(/,/g,`<br>`)
+    document.getElementById("outputArea").innerHTML = rolesString;
+}
