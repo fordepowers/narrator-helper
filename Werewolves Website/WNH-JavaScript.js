@@ -12,6 +12,14 @@ let LoversDeadAlready;
 let DogIsOut;
 // var Howl = new Audio("http://soundbible.com/grab.php?id=1291&type=mp3");
 
+/**
+ * Left for my wife, Meg Rose.
+ * We always used to make this sound randomly.
+ */
+function EasterEgg() {
+    let MegSound = new Audio("https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptitle=Small+Mouth+pop+sound&filename=od/ODc3MTQ0MzEwODc3MjQw_Pqvf2yhLezc.mp3");
+    MegSound.play();
+}
 
 /**
  * Plays the introduction page, if the user declines, it breaks the program.
