@@ -510,6 +510,8 @@ function GetRolesOutput() {
     outputGoodGuys = players - outputBadGuys;
     roles.push(`Good Guys: <span style='color: green'>${outputGoodGuys}</span>`);
     roles.push(`Bad Guys: <span style='color: red'>${outputBadGuys}</span>`);
+    roles.push(`<br>`);
+    roles.push(`<br>`);
     rolesString = roles.toString()
     rolesString = rolesString.replace(/,/g,`<br>`)
     document.getElementById("outputArea").innerHTML = rolesString;
