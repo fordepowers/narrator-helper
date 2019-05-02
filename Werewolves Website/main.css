@@ -76,7 +76,7 @@ body, html {
 }
 
 .bgimg {
-    background-image: urL("https://www.chromethemer.com/wallpapers/chromebook-wallpapers/download/full-moon-3840x2160.jpg");
+    background-image: urL("full-moon-3840x2160.jpg");
     min-height: 100%;
     background-position: center;
     background-size: cover;
