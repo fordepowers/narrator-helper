@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css?family=Merienda+One" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <script src="WNH-JavaScript.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <style>
         h1 {
             font-family: 'Merienda One', cursive;
@@ -48,31 +47,43 @@
             width: 100%;
             margin: 0;
         }
+
+        .noAnimate {
+            -webkit-transition: none !important;
+            -moz-transition: none !important;
+            -o-transition: none !important;
+            transition: none !important;
+        }
     </style>
 </head>
 
 <body>
     <div class="w3-text-white">
         <div class="w3-display-topmiddle" id="middleDisplay" style="margin: auto; width: 90%;">
-            <h1 style="text-align: center;">Roles</h1>
-            <hr class="w3-large w3-border-white" style="margin: auto; width: 60%; box-shadow: 0px 0px 5px black;">
-            <br>
-            <h3 class="w3-large">Enter the number of
-                players you have, and this will show you what roles will be available.</h3>
-            <br>
-            <input id="roles-input" class="w3-input" type="number" min="1" max="100" value="0"
-                style="display: block; margin: 0 auto;">
-            <br>
-            <button id="send-button" onClick="GetRolesOutput()" class="w3-xlarge w3-btn"
-                style="display: block; margin: 0 auto; box-shadow: 0px 0px 5px black;">Go</button>
-            <br>
-            <div id="outputArea" style="text-align: center;"></div>
-            <br>
-            <div id="padding"></div>
+            <div class="w3-animate-top">
+                <h1 style="text-align: center;">Roles</h1>
+                <hr class="w3-large w3-border-white" style="margin: auto; width: 60%; box-shadow: 0px 0px 5px black;">
+                <br>
+            </div>
+            <div class="w3-animate-fading">
+                <h3 class="w3-large">Enter the number of
+                    players you have, and this will show you what roles will be available.</h3>
+                <br>
+                <input id="roles-input" class="w3-input" type="number" min="1" max="100" value="0"
+                    style="display: block; margin: 0 auto;">
+                <br>
+                <button id="send-button" onClick="GetRolesOutput()" class="w3-xlarge w3-btn"
+                    style="display: block; margin: 0 auto; box-shadow: 0px 0px 5px black;">Go</button>
+                <br>
+                <div id="outputArea" style="text-align: center;"></div>
+                <br>
+                <div id="padding"></div>
+            </div>
+
         </div>
         <div class="black-gradient-top" style="opacity: 0.75;"></div>
         <div class="black-gradient-bottom" style="opacity: 0.3;"></div>
-        <ul class="MenuHeader">
+        <ul class="MenuHeader noAnimate">
             <li class="MenuList"><a href="index.html">Game</a></li>
             <li class="MenuList"><a href="guide.html">User Guide</a></li>
             <li class="MenuList"><a href="roles.html" class="active">Roles</a></li>

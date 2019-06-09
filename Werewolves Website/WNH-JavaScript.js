@@ -512,6 +512,7 @@ function GetRolesOutput() {
     roles.push(`Bad Guys: <span style='color: red'>${outputBadGuys}</span>`);
     roles.push(`<br>`);
     roles.push(`<br>`);
+    roles.push(`<br>`);
     rolesString = roles.toString()
     rolesString = rolesString.replace(/,/g,`<br>`)
     document.getElementById("outputArea").innerHTML = rolesString;
