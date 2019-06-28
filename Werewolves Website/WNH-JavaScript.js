@@ -414,8 +414,9 @@ function CheckLoveLink(deadPerson) {
  * Function handles the trial during the day, and executing someone if it happens.
  */
 function DayTrial() {
-  let Ok = false
-  let deadPerson
+  let Ok = false;
+  SavedPerson = null // Reset the saved person
+  let deadPerson;
   if (Object.keys(PlayersHashTable).length > 2) {
     // If the player count is greater than 2, run the trial.
     while (Ok === false) {
